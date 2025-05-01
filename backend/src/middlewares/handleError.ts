@@ -13,9 +13,9 @@ export function errorMiddleware(err: Error, req: Request, res: Response, next: N
     message = err.message;
   }
 
-  if (statusCode >= 500) {
-    console.log(err.message);
-  }
+  console.error("🚨");
+  console.error(`Code erreur : ${statusCode}`);
+  console.error(`Message d'erreur : ${message}`);
 
   res.status(statusCode).json(message);
 }
