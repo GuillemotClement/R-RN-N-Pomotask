@@ -1,4 +1,4 @@
-import { pgTable, uuid, timestamp, varchar } from "drizzle-orm/pg-core";
+import { pgTable, uuid, timestamp, varchar, text } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -17,3 +17,19 @@ export const users = pgTable("users", {
 // typeof users -> recupere le type du shema users
 // 4inferInsert -> methode utilitaire de Drizzle qui creer un type TS correspondant ce qui est necessaire pour l'insertion
 export type NewUser = typeof users.$inferInsert;
+
+export const tasks = pgTable("tasks", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: varchar("title", { length: 255 }).notNull(),
+  describ: text("describ"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  // la valeur se met a jour a chaque update de la ligne
+  updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
+  // on doit passer via le js la valeur a stocker
+  deleteAt: timestamp("delete_at"),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+});
+
+export type NewTask = typeof tasks.$inferInsert;
