@@ -11,3 +11,9 @@ export class BadRequestError extends Error {
     super(message);
   }
 }
+
+export class ErrorAuthenticate extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}

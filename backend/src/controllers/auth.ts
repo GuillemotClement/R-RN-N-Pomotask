@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { createUser } from "../db/queries/userQueries.js";
+import { createUser, getUserByUsername } from "../db/queries/userQueries.js";
 import { NewUser } from "../db/schema.js";
-import { BadRequestError } from "../errors/classError.js";
-import { hashPassword } from "../utils/crypto.js";
+import { BadRequestError, ErrorAuthenticate } from "../errors/classError.js";
+import { checkPassword, hashPassword } from "../utils/crypto.js";
 
 export async function handleCreateUser(req: Request, res: Response) {
   type parameters = {
@@ -37,5 +37,49 @@ export async function handleCreateUser(req: Request, res: Response) {
     email: user.email,
     createdAt: user.createdAt,
     image: user.image,
+  });
+}
+
+export async function handleLoginUser(req: Request, res: Response) {
+  type parameters = {
+    username: string;
+    password: string;
+  };
+
+  type userFromDatabase = {
+    id: string;
+    username: string;
+    email: string;
+    image: string;
+    createdAt: string;
+    updatedAt: string;
+    password: string;
+  };
+
+  const params: parameters = req.body;
+
+  if (!params.username || !params.password) {
+    throw new BadRequestError("Missing required fields");
+  }
+
+  const userFromDatabase: NewUser = await getUserByUsername(params.username);
+
+  if (!userFromDatabase.id) {
+    throw new ErrorAuthenticate("Credentials not good");
+  }
+
+  const passwordIsGood = await checkPassword(params.password, userFromDatabase.password);
+
+  if (!passwordIsGood) {
+    throw new ErrorAuthenticate("Credentials not good");
+  }
+
+  res.status(200).json({
+    id: userFromDatabase.id,
+    username: userFromDatabase.username,
+    email: userFromDatabase.email,
+    image: userFromDatabase.image,
+    createdAt: userFromDatabase.createdAt,
+    updatedAt: userFromDatabase.updatedAt,
   });
 }

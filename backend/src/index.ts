@@ -1,6 +1,6 @@
 import express from "express";
 import path from "node:path";
-import { handleCreateUser } from "./controllers/auth.js";
+import { handleCreateUser, handleLoginUser } from "./controllers/auth.js";
 import { errorMiddleware } from "./middlewares/handleError.js";
 
 const app = express();
@@ -14,6 +14,7 @@ app.use("/", express.static(staticPath)); // permet de servir les fichier statiq
 app.use("/js", express.static(distPath)); // permet de servir le ts compiler pour les fichiers statiques.
 
 app.post("/register", handleCreateUser);
+app.post("/login", handleLoginUser);
 
 app.use(errorMiddleware);
 
