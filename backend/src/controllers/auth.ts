@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { createUser, getUserByUsername } from "../db/queries/userQueries.js";
 import { NewUser } from "../db/schema.js";
 import { BadRequestError, ErrorAuthenticate } from "../errors/classError.js";
-import { checkPassword, hashPassword } from "../utils/crypto.js";
+import { checkPassword, generateTokenJWT, hashPassword } from "../utils/crypto.js";
 
 export async function handleCreateUser(req: Request, res: Response) {
   type parameters = {
@@ -74,6 +74,11 @@ export async function handleLoginUser(req: Request, res: Response) {
     throw new ErrorAuthenticate("Credentials not good");
   }
 
+  const token = await generateTokenJWT(userFromDatabase.id);
+  if (!token) {
+    throw new ErrorAuthenticate("Token is not generate");
+  }
+
   res.status(200).json({
     id: userFromDatabase.id,
     username: userFromDatabase.username,
@@ -81,5 +86,6 @@ export async function handleLoginUser(req: Request, res: Response) {
     image: userFromDatabase.image,
     createdAt: userFromDatabase.createdAt,
     updatedAt: userFromDatabase.updatedAt,
+    token: token,
   });
 }
