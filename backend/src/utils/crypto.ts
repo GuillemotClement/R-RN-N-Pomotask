@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { HashError } from "../errors/classError.js";
-import jwt from "jsonwebtoken";
 import { config } from "../config.js";
+import jwt from "jsonwebtoken";
 
 export async function hashPassword(password: string) {
   const salt = bcrypt.genSaltSync(10);
