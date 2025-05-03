@@ -31,7 +31,6 @@ export const useUserStore = create<UserState>()(
 
       logout: () => {
         localStorage.removeItem("token"); // garde si tu gères un token séparé
-
         set({
           user: null,
           isAuthenticated: false,

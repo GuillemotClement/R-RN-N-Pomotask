@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../stores/userStore";
 import FormTask from "./tasks/FormTask";
+import DetailTask from "./tasks/DetailTask";
 
-// interface ITask {
-//   id: string;
-//   title: string;
-//   describ: string;
-// }
+export interface ITask {
+  id: string;
+  title: string;
+  describ?: string;
+  createdat: string;
+  updatedAt: string;
+  isDone: boolean;
+  userId: string;
+}
 
 export default function Homepage() {
-  const [listTask, setListTask] = useState({});
+  const [listTask, setListTask] = useState<ITask[]>([]);
 
-  // const user = useUserStore((state) => state.user);
-  // const userId = user?.id;
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const tokenJWT = localStorage.getItem("token") ?? "";
 
@@ -33,7 +36,6 @@ export default function Homepage() {
         }
 
         const { tasks } = await response.json();
-
         setListTask(tasks); // on viens stocker dans le state
       } catch (err) {
         console.error(err);
@@ -41,17 +43,18 @@ export default function Homepage() {
     };
 
     fetchTask(); // on lance la fonction pour recperer les donnees.
-  }, []); // on ajoute la dependance sur userId
+  }, [tokenJWT]);
   console.log(listTask);
   return (
-    <div className=''>
-      <h1>Homepage</h1>
+    <div className='my-12'>
       {isAuthenticated ? <FormTask /> : ""}
-      {/* <ul>
+
+      <ul>
         {listTask.map((task) => (
-          <li>task.title</li>
+          <DetailTask key={task.id} task={task} />
         ))}
-      </ul> */}
+      </ul>
+      {/* {listTask ? <ListTask listTask={listTask} /> : <p>Pas encore de taches disponible</p>} */}
     </div>
   );
 }

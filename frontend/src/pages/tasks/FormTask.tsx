@@ -51,15 +51,14 @@ export default function FormTask() {
       //utiliser fonction pour passer la task dans le composant parent pour le state pour l'affichage
 
       const task = await response.json();
-      console.log(task);
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div className=''>
-      <form action='' className='fieldset border' onSubmit={handleSubmit(onSubmit)}>
+    <div className='grid place-items-center'>
+      <form action='' className='fieldset mx-auto' onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor='title' className='label'>
           Titre
         </label>

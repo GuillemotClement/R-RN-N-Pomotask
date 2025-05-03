@@ -10,6 +10,7 @@ export async function handleCreateTask(req: Request, res: Response) {
   };
 
   const params: parameters = req.body;
+  params.userId = req.userId ?? "";
 
   if (!params.title || !params.userId) {
     throw new BadRequestError("Missing required field");
