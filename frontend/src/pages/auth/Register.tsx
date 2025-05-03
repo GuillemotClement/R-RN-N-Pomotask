@@ -3,24 +3,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import * as yup from "yup";
 
-type Inputs = {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  image: string | null | undefined;
-  confirm: boolean;
-};
-
-const defaultValue = {
-  username: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  image: "",
-  confirm: false,
-};
-
 const schema = yup.object({
   username: yup.string().required("Un non d'utilisateur est attendu"),
   email: yup.string().email("Un email valide est attendue").required("Une email est attendu"),
@@ -32,14 +14,25 @@ const schema = yup.object({
     .string()
     .required("Une confirmation de mot de passer est attendue")
     .oneOf([yup.ref("password")], "La valeur de la confirmation doit matcher avec le password"),
-  image: yup.string().nullable().optional(),
+  image: yup.string().nullable().default(""),
   confirm: yup
     .boolean()
     .required("La condition d'utilisation doivent etre accepter pour s'inscrire"),
 });
 
+type Inputs = yup.InferType<typeof schema>;
+
+const defaultValue: Partial<Inputs> = {
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  image: "",
+  confirm: false,
+};
+
 export default function Register() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const {
     register,

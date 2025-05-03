@@ -1,29 +1,42 @@
 import { Link } from "react-router";
+import { useUserStore } from "../stores/userStore";
 
 export default function Header() {
+  const logout = useUserStore((state) => state.logout);
+  const user = useUserStore((state) => state.user);
+  const isAuth = useUserStore((state) => state.isAuthenticated);
+  const image = user?.image ?? "https://randomuser.me/api/portraits/lego/1.jpg";
+
   return (
     <header className='navbar shadow px-10'>
       <div className='flex-1'>
         <span>Pomotask</span>
       </div>
       <div className='flex-none'>
-        <ul className='menu menu-vertical lg:menu-horizontal rounded-box'>
-          <li>
-            <Link to={"/login"}>Connexion</Link>
-          </li>
-          <li>
-            <Link to={"/register"}>Inscription</Link>
-          </li>
-        </ul>
+        {isAuth ? (
+          <ul className='menu menu-vertical lg:menu-horizontal rounded-box'>
+            <li>
+              <button className='btn btn-neutral' onClick={logout}>
+                Logout
+              </button>
+            </li>
+          </ul>
+        ) : (
+          <ul className='menu menu-vertical lg:menu-horizontal rounded-box'>
+            <li>
+              <Link to={"/login"}>Connexion</Link>
+            </li>
+            <li>
+              <Link to={"/register"}>Inscription</Link>
+            </li>
+          </ul>
+        )}
       </div>
       <div className='flex gap-2'>
         <div className='dropdown dropdown-end'>
           <div tabIndex={0} role='button' className='btn btn-ghost btn-circle avatar'>
             <div className='w-10 rounded-full'>
-              <img
-                alt='Tailwind CSS Navbar component'
-                src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
-              />
+              <img alt='Tailwind CSS Navbar component' src={image} />
             </div>
           </div>
           <ul
