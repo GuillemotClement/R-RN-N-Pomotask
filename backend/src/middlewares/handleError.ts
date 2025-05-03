@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { BadRequestError, HashError } from "../errors/classError.js";
+import { respondWithError } from "../utils/json.js";
 
 export function errorMiddleware(err: Error, req: Request, res: Response, next: NextFunction) {
   let statusCode = 500;
@@ -13,9 +14,5 @@ export function errorMiddleware(err: Error, req: Request, res: Response, next: N
     message = err.message;
   }
 
-  console.error("🚨");
-  console.error(`Code erreur : ${statusCode}`);
-  console.error(`Message d'erreur : ${message}`);
-
-  res.status(statusCode).json(message);
+  respondWithError(res, statusCode, message);
 }

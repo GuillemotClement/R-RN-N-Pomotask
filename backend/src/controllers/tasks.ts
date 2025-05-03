@@ -34,12 +34,12 @@ export async function handleCreateTask(req: Request, res: Response) {
   });
 }
 
-export async function handleListTask(req: Request<{ userId: string }>, res: Response) {
+export async function handleListTask(req: Request, res: Response) {
   type parameters = {
     userId: string;
   };
 
-  const params: parameters = req.params;
+  const params: parameters = { userId: req.userId ?? "" };
 
   if (!params.userId) {
     throw new BadRequestError("Missing required field");

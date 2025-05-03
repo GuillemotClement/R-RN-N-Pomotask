@@ -4,6 +4,7 @@ import { handleCreateUser, handleLoginUser } from "./controllers/auth.js";
 import { errorMiddleware } from "./middlewares/handleError.js";
 import { handleCreateTask, handleListTask } from "./controllers/tasks.js";
 import cors from "cors";
+import { checkToken } from "./middlewares/auth.js";
 
 const app = express();
 
@@ -19,8 +20,8 @@ app.use("/js", express.static(distPath)); // permet de servir le ts compiler pou
 app.post("/register", handleCreateUser);
 app.post("/login", handleLoginUser);
 
-app.post("/tasks", handleCreateTask);
-app.get("/tasks/:userId", handleListTask);
+app.post("/tasks", checkToken, handleCreateTask);
+app.get("/tasks", checkToken, handleListTask);
 
 app.use(errorMiddleware);
 
