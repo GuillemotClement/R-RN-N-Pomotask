@@ -1,4 +1,4 @@
-import { pgTable, uuid, timestamp, varchar, text } from "drizzle-orm/pg-core";
+import { pgTable, uuid, timestamp, varchar, text, boolean } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -22,6 +22,7 @@ export const tasks = pgTable("tasks", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 255 }).notNull(),
   describ: text("describ"),
+  isDone: boolean("is_done").default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   // la valeur se met a jour a chaque update de la ligne
   updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),

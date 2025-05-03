@@ -1,0 +1,19 @@
+meta {
+  name: List task
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8080/tasks
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "first task",
+    "describ": "blablabla blabla wedfwd qadsa d",
+    "userId": "a9c436c7-30b8-4d26-a776-9446b26e1eea"
+  }
+}
