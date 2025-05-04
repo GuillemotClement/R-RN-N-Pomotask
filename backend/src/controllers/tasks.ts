@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import {
   createTask,
+  deleteTask,
   detailTask,
   listTask,
   updateFinishTask,
   updateToDoTask,
 } from "../db/queries/taskQueries.js";
 import { BadRequestError } from "../errors/classError.js";
+import { respondWithJSON } from "../utils/json.js";
 
 export async function handleCreateTask(req: Request, res: Response) {
   type parameters = {
@@ -67,7 +69,7 @@ export async function handleSetStatutTask(req: Request, res: Response) {
   };
 
   const params: parameters = { taskId: req.params.id ?? "" };
-  console.log(params);
+
   let task = await detailTask(params.taskId);
 
   let result;
@@ -78,4 +80,24 @@ export async function handleSetStatutTask(req: Request, res: Response) {
   }
   console.log(result);
   res.status(201).json(result);
+}
+
+export async function handleDeleteTask(req: Request, res: Response) {
+  type parameters = {
+    taskId: string;
+  };
+
+  const params: parameters = { taskId: req.params.id ?? "" };
+
+  console.log(params);
+
+  const result = await deleteTask(params.taskId);
+
+  if (!result) {
+    throw new Error("Failed delete task");
+  }
+
+  console.log(result);
+
+  respondWithJSON(res, 200, result);
 }

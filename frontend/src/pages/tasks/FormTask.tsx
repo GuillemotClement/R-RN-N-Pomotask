@@ -18,10 +18,6 @@ const defaultValue: Partial<Inputs> = {
   describ: "",
 };
 
-// type IPropForm = {
-//   handleNewTask: (task: ITask) => void;
-// };
-
 export default function FormTask({ handleNewTask }) {
   const {
     register,

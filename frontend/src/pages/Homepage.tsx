@@ -49,8 +49,35 @@ export default function Homepage() {
     }
   }
 
-  function deleteTask(data: string) {
-    console.log(data);
+  async function deleteTask(taskId: string) {
+    const data = {
+      taskId,
+    };
+
+    try {
+      const response = await fetch(`${baseURL}/tasks/delete/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: tokenJWT,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur serveur");
+      }
+
+      const updatedTask = await response.json();
+
+      console.log(updatedTask);
+
+      setListTask((prevTasks) => {
+        return prevTasks.filter((task) => task.id !== updatedTask.id);
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async function validateTask(taskId: string) {
@@ -72,9 +99,8 @@ export default function Homepage() {
       }
 
       const updatedTask = await response.json(); //récupération de la réponse backend
-      console.log("Le retour du update");
-      console.log(updatedTask);
       // mise à jour de l'état local
+
       setListTask((prevTasks) => {
         return prevTasks.map((task) => {
           if (task.id === updatedTask.id) {

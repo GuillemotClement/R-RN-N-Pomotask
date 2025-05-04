@@ -42,6 +42,7 @@ export async function deleteTask(taskId: string) {
   const [result] = await db
     .update(tasks)
     .set({ deleteAt: sql`NOW()` })
-    .where(eq(tasks.id, taskId));
+    .where(eq(tasks.id, taskId))
+    .returning();
   return result;
 }
