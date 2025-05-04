@@ -1,60 +1,39 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const schema = yup.object({
-  title: yup.string().required("Une valeur est attendue"),
-  describ: yup.string().optional().default(""),
+  title: yup.string().required("Une valeur est attendue").trim(),
+  describ: yup.string().notRequired().trim().default(""),
 });
 
-type Inputs = yup.InferType<typeof schema>;
+// type Inputs = yup.InferType<typeof schema>;
+type Inputs = {
+  title: string;
+  describ?: string;
+};
 
 const defaultValue: Partial<Inputs> = {
   title: "",
   describ: "",
 };
 
-export default function FormTask() {
+// type IPropForm = {
+//   handleNewTask: (task: ITask) => void;
+// };
+
+export default function FormTask({ handleNewTask }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Inputs>({ resolver: yupResolver(schema), defaultValues: defaultValue });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    type taskData = {
-      title: string;
-      describ?: string;
-    };
-    const fullURL = `http://localhost:8080/tasks`;
-    try {
-      const taskData: taskData = {
-        title: data.title,
-        describ: data.describ,
-      };
-
-      const tokenJWT = localStorage.getItem("token") ?? "";
-
-      const response = await fetch(fullURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: tokenJWT,
-        },
-        body: JSON.stringify(taskData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Erreur serveur");
-      }
-
-      //utiliser fonction pour passer la task dans le composant parent pour le state pour l'affichage
-
-      const task = await response.json();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  function onSubmit(data) {
+    handleNewTask(data);
+    reset();
+  }
 
   return (
     <div className='grid place-items-center'>

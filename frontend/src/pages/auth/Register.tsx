@@ -69,7 +69,7 @@ export default function Register() {
   };
 
   return (
-    <div className=''>
+    <div className='grid place-items-center py-32'>
       <form
         className='fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4'
         onSubmit={handleSubmit(onSubmit)}
@@ -144,14 +144,16 @@ export default function Register() {
           <p className='text-red-500 italic font-bold'>{errors.confirm.message}</p>
         )}
 
-        <Link to={"/login"}>J'ai deja un compte</Link>
+        <Link to={"/login"} className='mt-2'>
+          J'ai deja un compte
+        </Link>
         <Link to={"/"}>Condition d'utilisation</Link>
 
         <div className='flex justify-between'>
           <Link to={"/"} className='btn btn-neutral mt-4'>
             Retour
           </Link>
-          <button className='btn btn-primary mt-4'>Login</button>
+          <button className='btn btn-primary mt-4'>Inscription</button>
         </div>
       </form>
     </div>

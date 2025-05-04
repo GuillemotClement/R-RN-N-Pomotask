@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
-import { createTask, listTask } from "../db/queries/taskQueries.js";
+import {
+  createTask,
+  detailTask,
+  listTask,
+  updateFinishTask,
+  updateToDoTask,
+} from "../db/queries/taskQueries.js";
 import { BadRequestError } from "../errors/classError.js";
 
 export async function handleCreateTask(req: Request, res: Response) {
@@ -53,4 +59,23 @@ export async function handleListTask(req: Request, res: Response) {
   }
 
   res.status(200).json({ tasks });
+}
+
+export async function handleSetStatutTask(req: Request, res: Response) {
+  type parameters = {
+    taskId: string;
+  };
+
+  const params: parameters = { taskId: req.params.id ?? "" };
+  console.log(params);
+  let task = await detailTask(params.taskId);
+
+  let result;
+  if (task.isDone === false) {
+    result = await updateFinishTask(task.id);
+  } else {
+    result = await updateToDoTask(task.id);
+  }
+  console.log(result);
+  res.status(201).json(result);
 }

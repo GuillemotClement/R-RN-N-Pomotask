@@ -2,7 +2,7 @@ import express from "express";
 import path from "node:path";
 import { handleCreateUser, handleLoginUser } from "./controllers/auth.js";
 import { errorMiddleware } from "./middlewares/handleError.js";
-import { handleCreateTask, handleListTask } from "./controllers/tasks.js";
+import { handleCreateTask, handleListTask, handleSetStatutTask } from "./controllers/tasks.js";
 import cors from "cors";
 import { checkToken } from "./middlewares/auth.js";
 
@@ -22,6 +22,7 @@ app.post("/login", handleLoginUser);
 
 app.post("/tasks", checkToken, handleCreateTask);
 app.get("/tasks", checkToken, handleListTask);
+app.put("/tasks/status/:id", checkToken, handleSetStatutTask);
 
 app.use(errorMiddleware);
 

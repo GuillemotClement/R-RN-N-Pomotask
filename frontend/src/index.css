@@ -1,2 +1,11 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: fantasy --default;
+}
+
+@utility btn-error {
+  @apply bg-red-500 hover:bg-red-600 text-white;
+}
+@utility btn-success {
+  @apply text-white;
+}

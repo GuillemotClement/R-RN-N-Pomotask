@@ -21,12 +21,20 @@ export async function detailTask(taskId: string) {
 }
 
 export async function updateFinishTask(taskId: string) {
-  const [result] = await db.update(tasks).set({ isDone: true }).where(eq(tasks.id, taskId));
+  const [result] = await db
+    .update(tasks)
+    .set({ isDone: true })
+    .where(eq(tasks.id, taskId))
+    .returning();
   return result;
 }
 
 export async function updateToDoTask(taskId: string) {
-  const [result] = await db.update(tasks).set({ isDone: false }).where(eq(tasks.id, taskId));
+  const [result] = await db
+    .update(tasks)
+    .set({ isDone: false })
+    .where(eq(tasks.id, taskId))
+    .returning();
   return result;
 }
 

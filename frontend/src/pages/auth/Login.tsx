@@ -62,9 +62,12 @@ export default function Login() {
   };
 
   return (
-    <div className=''>
-      <form className='fieldset' onSubmit={handleSubmit(onSubmit)}>
-        <h2 className='fieldset-legend'>Connexion</h2>
+    <div className='grid place-items-center py-32'>
+      <form
+        className='fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4'
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <h2 className='fieldset-legend text-2xl'>Connexion</h2>
 
         <label htmlFor='username' className='label'>
           Username
@@ -94,9 +97,11 @@ export default function Login() {
           <p className='text-red-500 italic font-bold'>{errors.password.message}</p>
         )}
 
-        <Link to={"/register"}>Pas de compte</Link>
+        <Link to={"/register"} className='text-blue-700 pt-2'>
+          Pas de compte
+        </Link>
 
-        <div className='flex '>
+        <div className='flex justify-between'>
           <Link to={"/"} className='btn btn-neutral mt-4'>
             Retour
           </Link>
