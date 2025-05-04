@@ -18,7 +18,7 @@ export default function DetailTask({ task, deleteTask, validateTask }: DetailTas
   };
 
   return (
-    <li className={`list-row flex ${task.isDone ? "bg-green-500" : ""}`}>
+    <li className={`list-row flex ${task.isDone ? "bg-gray-400" : ""}`}>
       <div className='flex-1'>
         <h2 className='font-bolds text-xl mb-4'>{task.title}</h2>
         <p className='list-col-wrap text-xs'>{task.describ}</p>
