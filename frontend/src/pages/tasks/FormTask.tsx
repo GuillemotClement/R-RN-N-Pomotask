@@ -7,10 +7,9 @@ const schema = yup.object({
   describ: yup.string().notRequired().trim().default(""),
 });
 
-// type Inputs = yup.InferType<typeof schema>;
 type Inputs = {
   title: string;
-  describ?: string;
+  describ: string | null;
 };
 
 const defaultValue: Partial<Inputs> = {
@@ -18,7 +17,11 @@ const defaultValue: Partial<Inputs> = {
   describ: "",
 };
 
-export default function FormTask({ handleNewTask }) {
+type FormTaskProps = {
+  handleNewTask: (data: Inputs) => void;
+};
+
+export default function FormTask({ handleNewTask }: FormTaskProps) {
   const {
     register,
     handleSubmit,
@@ -26,34 +29,37 @@ export default function FormTask({ handleNewTask }) {
     reset,
   } = useForm<Inputs>({ resolver: yupResolver(schema), defaultValues: defaultValue });
 
-  function onSubmit(data) {
+  function onSubmit(data: Inputs) {
     handleNewTask(data);
     reset();
   }
 
   return (
-    <div className='grid place-items-center'>
-      <form action='' className='fieldset mx-auto' onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='title' className='label'>
-          Titre
-        </label>
-        <input type='text' className='input' {...register("title")} />
-        {errors.title && <p className='text-red-500 italic font-bold'>{errors.title.message}</p>}
+    <div className='grid place-items-center w-full'>
+      <form
+        action=''
+        className='flex flex-col w-full p-2 gap-y-2'
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className='flex flex-col'>
+          <label htmlFor='title' className='label'>
+            Titre
+          </label>
+          <input type='text' className='input w-full' {...register("title")} />
+          {errors.title && <p className='text-red-500 italic font-bold'>{errors.title.message}</p>}
+        </div>
 
-        <label htmlFor='describ' className='describ'>
-          Description
-        </label>
-        <textarea
-          id='describ'
-          placeholder='Description de la tache'
-          className='textarea'
-          {...register("describ")}
-        ></textarea>
-        {errors.describ && (
-          <p className='text-red-500 italic font-bold'>{errors.describ.message}</p>
-        )}
+        <div className='flex flex-col'>
+          <label htmlFor='describ' className='label'>
+            Description
+          </label>
+          <textarea id='describ' className='textarea w-full' {...register("describ")}></textarea>
+          {errors.describ && (
+            <p className='text-red-500 italic font-bold'>{errors.describ.message}</p>
+          )}
+        </div>
 
-        <div className=''>
+        <div className='flex justify-center'>
           <button className='btn btn-primary'>Ajouter</button>
         </div>
       </form>

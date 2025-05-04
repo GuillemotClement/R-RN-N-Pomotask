@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "../stores/userStore";
 import FormTask from "./tasks/FormTask";
 import DetailTask from "./tasks/DetailTask";
+import Timer from "../components/Timer";
 
 export interface ITask {
   id: string;
@@ -15,7 +16,7 @@ export interface ITask {
 
 export interface INewTask {
   title: string;
-  describ?: string;
+  describ: string | null;
 }
 
 export default function Homepage() {
@@ -141,7 +142,12 @@ export default function Homepage() {
   console.log(listTask);
   return (
     <div className='my-12 container mx-auto'>
-      {isAuthenticated ? <FormTask handleNewTask={handleNewTask} /> : ""}
+      <div className='flex justify-between'>
+        <div className='flex-1'>
+          {isAuthenticated ? <FormTask handleNewTask={handleNewTask} /> : ""}
+        </div>
+        <Timer />
+      </div>
 
       <ul className='list bg-base-100 rounded-box shadow-md'>
         <li className='p-4 pb-2 text-xs opacity-60 tracking-wide'>Mes dernière tâches en cours</li>
