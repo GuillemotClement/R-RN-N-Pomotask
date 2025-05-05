@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useUserStore } from "../stores/userStore";
+import Radio from "./Radio";
 
 export default function Header() {
   const logout = useUserStore((state) => state.logout);
@@ -7,38 +8,16 @@ export default function Header() {
   const isAuth = useUserStore((state) => state.isAuthenticated);
   const image = user?.image ?? "https://randomuser.me/api/portraits/lego/1.jpg";
 
-  // const handleDebug = async () => {
-  //   try {
-  //     const tokenJWT = localStorage.getItem("token") ?? "";
-  //     const response = await fetch("http://localhost:8080/debug", {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: tokenJWT,
-  //       },
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Echec requete sur path /debug");
-  //     }
-
-  //     const data = response.json();
-
-  //     console.log(data);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
   return (
     <header className='navbar shadow px-10'>
-      <div className='flex-1'>
-        <span>Pomotask</span>
+      <div className='flex items-center flex-1'>
+        <div className=''>
+          <span>Pomotask</span>
+        </div>
+        <Radio />
       </div>
+
       <div className='flex-none'>
-        {/* <button className='btn btn-neutral' onClick={handleDebug}>
-          debug
-        </button> */}
         {isAuth ? (
           <ul className='menu menu-vertical lg:menu-horizontal rounded-box'>
             <li>
