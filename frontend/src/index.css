@@ -9,3 +9,7 @@
 @utility btn-success {
   @apply text-white;
 }
+
+@utility btn-warning {
+  @apply text-white;
+}
